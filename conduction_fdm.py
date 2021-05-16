@@ -26,10 +26,14 @@ def initialize(x: int, y: int):
     return np.zeros((int(x//dx),int(y//dy)))
 
 def boundary_condtions (domain: np.ndarray,t1:float=25, t2:float=25, t3:float=25, t4:float=25):
+    
     '''Replaces the boundary values in the domain with the speccified values
         INPUT : Temperatures(t1,t2,t3,t4)
+        note  : if parameters are not provided, the function assumes a deault 
+                value of 25 (room temp in deg C)
         |Takes Room Temperature if not specified|
         OUTPUT : Changes are made in-place at the array'''
+    
     n1,n2 = domain.shape
     domain[:,0] = t1
     domain[0] = t2
