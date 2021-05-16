@@ -3,16 +3,27 @@
 import numpy as np
 
 def initialize(x: int, y: int):
-    '''This function initializes the domain for computation based on the length and bredth of the geometry
+    
+    '''This function initializes the domain for computation based on the length and breadth of the geometry
+    
         INPUT : Length,Bredth
-        OUTPUT: 2D array
-        Aux INPUT : Mesh Element dimensions
+        OUTPUT: 2D array 
+        
+        Aux INPUT : Mesh Element dimensions dx ad dy
         '''
-    dx = input ("Enter the element size on X-axis")
-    dy = input ("Enter the element size on Y-axis")
-    domain = np.ones((x//dx,y//dy))
-    domain = domain*25
-    return domain
+    while True:
+        # the loop helps to restart the initialization procedure untill sucessful completion.
+        try:
+            # dx and dy expects a positive value which is less than the value x and y
+            dx = float(input ("Enter the element size on X-axis "))
+            dy = float(input ("Enter the element size on Y-axis "))
+            if ((dx<=0 or dy<=0) or (dx>x or dy>y)):
+                raise ValueError
+            break
+        except ValueError:
+            print("Error: Recieved improper Value or datatype")
+    print("Log: Domain created succesfully")
+    return np.zeros((int(x//dx),int(y//dy)))
 
 def boundary_condtions (domain: np.ndarray,t1:float=25, t2:float=25, t3:float=25, t4:float=25):
     '''Replaces the boundary values in the domain with the speccified values
