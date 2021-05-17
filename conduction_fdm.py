@@ -41,8 +41,34 @@ def boundary_condtions (domain: np.ndarray,t1:float=25, t2:float=25, t3:float=25
     domain[n1-1] = t4
     return domain
 
-def fdm(domain: np.ndarray):
+def fdm(domain: np.ndarray,analysis:str,type:str="l_to_r"):
+    ''' The function takes in the domain and modifies the element in place 
+        to reflect the change as per the physics of the problem 
+        
+        INPUT : domain, analysis_Type(Conduction,Convection),
+                march pattern as left to right, right to left etc
+                
+        OUTPUT : 5 point approximation of the current node'''
+    
+    
     n1,n2 = domain.shape
-    for i in range(1,n1-1):
-        for j in range(1,n2-1):
-            domain[i][j] = domain[i-1][j] + domain [i][j+1] + domain[i+1][j] + domain[i][j-1]
+    # switch between equtions
+    equations = {'conduction':lambda M,i,j: (M[i][j-1] + M[i-1][j] + M[i][j+1] +M[i+1][j])/4,
+                 'convection':lambda domain,i,j:35}
+    #governing model
+    model = equations[analysis]
+    
+    #selection of march pattern
+    method = {"l_to_r":(1,n1-1,1,1,n2-1,1),
+              "r_to_l":(n1-2,0,-1,1,n2-1,1),
+              "t_to_b":(1,n2-1,1,1,n1-1,1),
+              "b_to_t":(n2-2,0,-1,1,n1-1,1)}
+    p,q,g1,r,s,g2 = method[type]
+    
+    # dereferencing node positions
+    for i in range(p,q,g1):
+        for j in range(r,s,g2):
+            print(i,j,domain[i][j])
+            domain[i][j] = model(domain,i,j)
+            
+    return domain
