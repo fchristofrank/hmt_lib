@@ -1,0 +1,13 @@
+def boundary_conditions (domain: np.ndarray,t1:float=25, t2:float=25, t3:float=25, t4:float=25):
+    '''Replaces the boundary values in the domain with the speccified values
+        
+        INPUT : Temperatures(t1,t2,t3,t4)
+        |Takes Room Temperature if not specified|
+        
+        OUTPUT : Changes are made in-place at the array'''
+    n1,n2 = domain.shape
+    domain[:,0] = t1
+    domain[0] = t2
+    domain[:,n2-1] = t3
+    domain[n1-1] = t4
+    return domain
