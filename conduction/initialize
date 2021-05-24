@@ -1,0 +1,53 @@
+def initialize(x: int, y: int):
+    
+    '''This function initializes the domain for computation based on the length and breadth of the geometry
+    
+        INPUT : Length,Bredth
+        OUTPUT: 2D array 
+        
+        Aux INPUT : Mesh Element dimensions
+        
+        '''
+    while True:
+        # the loop helps to restart the initialization procedure untill sucessful completion.
+        try:
+            # dx and dy expects a positive value which is less than the value x and y
+            dx = float(input ("Enter the element size on X-axis "))
+            dy = float(input ("Enter the element size on Y-axis "))
+
+            if ((dx<=0 or dy<=0) or (dx>x or dy>y)):
+                raise ValueError
+            break
+        except ValueError:
+            print("Error: Recieved improper Value or datatype")
+    print("Log: Domain created succesfully")
+    return np.zeros((int(x//dx),int(y//dy)))
+
+def initialize(rad: int):
+
+  '''This function create a domain for circle. The number of parameter is strictly one
+  
+    INPUT : Radius of the circle
+    OUTPUT: Domain with circular profile
+    
+    Aux INPUT : Mesh Element in the radial axis
+    '''
+    try:
+        dr = float(input("Enter the element size to descritize the geometry: CIRCLE "))
+        if dr<0:
+            raise ValueError
+        aux = 5 #units
+        rad = rad//dr
+        n1 = n2 = int(2*rad + aux)
+        domain = np.zeros((n1,n2))
+        print(n1,n2)
+        lim = rad**2
+        min = -sys.maxsize
+        for i in range(n1):
+            for j in range(n2):
+                if (int((i-rad-aux//2)**2+(j-rad-aux//2)**2) > lim):
+                    domain[i][j] = min
+    except:
+        print("Error: Recieved improper Value or datatype")
+
+    return domain
